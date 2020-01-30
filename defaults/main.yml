@@ -1,6 +1,7 @@
 # defaults/main.yml
 # Role default parameters
 ---
+rds_state: present
 rds_engine: postgres
 rds_engine_version: "11"
 rds_backup_retention_period: 7

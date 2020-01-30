@@ -10,7 +10,8 @@ Creates and ecnrypted AWS RDS PostgreSQL instance, subnet group, and security gr
 ## Variables
 | Variable | Required? | Default Value | Type | Description |
 |----------|-----------|---------------|------|-------------|
-| rds_ingress_sg_name | Yes | N/A | String | The name of the security group that will be granted access to the RDS instance | 
+| rds_state | No | N/A | String | present | Set to present to create, or absent to destroy |
+| rds_ingress_sg_names | Yes | N/A | List | A list of security group names that will be granted access to the RDS instance | 
 | rds_subnet_names | Yes | N/A | List | A list of subnet names for RDS instance subnet group | 
 | rds_kms_key_name | Yes | N/A | String | The name of the KMS key used to encrypt the RDS instance |
 | rds_name | Yes | N/A | String | The name of the RDS instance | 

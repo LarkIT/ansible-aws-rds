@@ -1,7 +1,6 @@
-# roles/aws-rds/tasks/main.yml
-
+# tasks/main.yml
 # Create RDS instance and depenencies
-
+---
 - name: Lookup KMS key info
   aws_kms_info:
     filters:
