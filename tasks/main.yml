@@ -1,0 +1,75 @@
+# roles/aws-rds/tasks/main.yml
+
+# Create RDS instance and depenencies
+
+- name: Lookup KMS key info
+  aws_kms_info:
+    filters:
+      alias: "{{ rds_kms_key_name }}"
+  register: kms_key_info
+
+- debug:
+    var: kms_key_info
+
+- name: Lookup subnet info
+  ec2_vpc_subnet_info:
+    filters:
+      "tag:Name": "{{ item }}"
+  loop: "{{ rds_subnet_names }}"
+  register: subnet_info
+
+- name: Create subnet group
+  rds_subnet_group:
+    state: present
+    name: "{{ rds_name }}"
+    description: "Subnet group for {{ rds_name }}"
+    subnets: "{{ subnet_info.results | sum(attribute='subnets', start=[]) | map(attribute='id') | list }}"
+
+- name: Create security group for RDS instance 
+  ec2_group:
+    name: "{{ rds_name }}-sg"
+    description: "Security group for {{ rds_name }}"
+    region: "{{ aws_region }}"
+    vpc_id: "{{ vpc_id }}"
+    rules:
+      - proto: tcp
+        from_port: 5432
+        to_port: 5432
+        group_name: "{{ rds_ingress_sg_names }}"
+    rules_egress:
+      - proto: all
+        from_port: 0
+        to_port: 65535
+        cidr_ip: 0.0.0.0/0
+    tags: 
+      Name : "{{ rds_name }}-sg"
+  
+- name: Lookup security group info
+  ec2_group_info:
+    filters:
+      group-name: "{{ rds_name }}-sg"
+  register: sg_info  
+
+- name: Create RDS instance
+  rds_instance:
+    id: "{{ rds_name }}"
+    state: "{{ rds_state }}"
+    engine: "{{ rds_engine }}"
+    engine_version: "{{ rds_engine_version }}"
+    db_subnet_group_name: "{{ rds_name }}"
+    vpc_security_group_ids: ["{{ sg_info|json_query('security_groups[0].group_id') }}"]
+    storage_encrypted: True
+    kms_key_id: "{{ kms_key_info|json_query('keys[0].key_id') }}"
+    db_instance_class: "{{ rds_instance_class }}"
+    db_name: "{{ rds_db_name }}"
+    master_username: "{{ rds_db_username }}"
+    master_user_password: "{{ rds_db_password }}"
+    allocated_storage: "{{ rds_allocated_storage }}"
+    final_db_snapshot_identifier: "{{ rds_name }}-FINAL"
+    backup_retention_period: "{{ rds_backup_retention_period }}"
+    copy_tags_to_snapshot: True 
+    preferred_backup_window: "{{ rds_preferred_backup_window }}"
+    preferred_maintenance_window: "{{ rds_preferred_maintenance_window }}"
+    auto_minor_version_upgrade: True
+    tags: 
+      Name: "{{ rds_name }}"
