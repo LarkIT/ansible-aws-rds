@@ -7,9 +7,6 @@
       alias: "{{ rds_kms_key_name }}"
   register: kms_key_info
 
-- debug:
-    var: kms_key_info
-
 - name: Lookup subnet info
   ec2_vpc_subnet_info:
     filters:
