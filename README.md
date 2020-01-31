@@ -1,4 +1,4 @@
-# Lark IT Ansible AWS EC2 Role
+# Lark IT Ansible AWS RDS Role
 
 Creates and ecnrypted AWS RDS PostgreSQL instance, subnet group, and security group. Scheduled maintenance, scheduled snapshots, and final snapshot are enabled by default. 
 
