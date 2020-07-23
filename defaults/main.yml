@@ -1,9 +1,36 @@
 # defaults/main.yml
 # Role default parameters
 ---
+vpc_id: my-vpc-id
+aws_region: west-us-2
+aws_resource_environment: Staging
+rds_name: my-rds-instance
+rds_kms_key_name: my-key
+rds_subnet_names:
+  - subnet1
+  - subnet2
+  - subnet3
+rds_sg_rules:
+  - proto: tcp
+    from_port: 5432
+    to_port: 5432
+    group_name: "{{ rds_ingress_sg_names }}"
+rds_sg_rules_egress:
+  - proto: all
+    from_port: 0
+    to_port: 65535
+    cidr_ip: 0.0.0.0/0
 rds_state: present
 rds_engine: postgres
 rds_engine_version: "11"
+rds_instance_class: rds-class
+rds_db_name: mydb
+rds_db_username:
+rds_db_password:
+rds_allocated_storage: 
 rds_backup_retention_period: 7
 rds_preferred_backup_window: 07:00-08:00
 rds_preferred_maintenance_window: Sun:09:00-Sun:10:00
+rds_is_blank: true
+rds_is_from_snapshot: false
+rds_source_snapshot_arn: my-snapshot-arn
