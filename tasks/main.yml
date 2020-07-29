@@ -62,7 +62,7 @@
     tags: 
       Name: "{{ rds_name }}"
       Environment: "{{ aws_resource_environment }}"
-  when: rds_is_blank
+  when: rds_from == "blank"
 
 - name: Create RDS instance from snapshot
   rds_instance:
@@ -90,4 +90,4 @@
     tags: 
       Name: "{{ rds_name }}"
       Environment: "{{ aws_resource_environment }}"
-  when: rds_is_from_snapshot
+  when: rds_from == "snapshot"

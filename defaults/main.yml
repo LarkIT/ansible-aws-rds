@@ -14,7 +14,7 @@ rds_sg_rules:
   - proto: tcp
     from_port: 5432
     to_port: 5432
-    group_name: "{{ rds_ingress_sg_names }}"
+    group_name: my-sg
 rds_sg_rules_egress:
   - proto: all
     from_port: 0
@@ -25,12 +25,11 @@ rds_engine: postgres
 rds_engine_version: "11"
 rds_instance_class: rds-class
 rds_db_name: mydb
-rds_db_username:
-rds_db_password:
-rds_allocated_storage: 
+rds_db_username: dbuser
+rds_db_password: dbpass
+rds_allocated_storage: 5
 rds_backup_retention_period: 7
 rds_preferred_backup_window: 07:00-08:00
 rds_preferred_maintenance_window: Sun:09:00-Sun:10:00
-rds_is_blank: true
-rds_is_from_snapshot: false
+rds_from: blank
 rds_source_snapshot_arn: my-snapshot-arn
