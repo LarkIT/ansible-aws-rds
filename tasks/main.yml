@@ -69,7 +69,7 @@
     id: "{{ rds_name }}"
     state: "{{ rds_state }}"
     creation_source: snapshot
-    snapshot_identifier: "{{ rds_source_snapshot_arn }}"
+    db_snapshot_identifier: "{{ rds_source_snapshot_arn }}"
     engine: "{{ rds_engine }}"
     engine_version: "{{ rds_engine_version }}"
     db_subnet_group_name: "{{ rds_name }}"
