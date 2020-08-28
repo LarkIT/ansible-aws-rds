@@ -64,12 +64,13 @@
       Environment: "{{ aws_resource_environment }}"
   when: rds_from == "blank"
 
-- name: Create RDS instance from snapshot
+- name: Create RDS instance from instance
   rds_instance:
     id: "{{ rds_name }}"
     state: "{{ rds_state }}"
-    creation_source: snapshot
-    db_snapshot_identifier: "{{ rds_source_snapshot_arn }}"
+    creation_source: instance
+    source_db_instance_identifier: "{{ rds_source_db_instance_identifier }}"
+    use_latest_restorable_time: "{{ rds_use_latest_restorable_time }}"
     engine: "{{ rds_engine }}"
     engine_version: "{{ rds_engine_version }}"
     db_subnet_group_name: "{{ rds_name }}"
@@ -77,7 +78,6 @@
     storage_encrypted: True
     kms_key_id: "{{ kms_key_info|json_query('keys[0].key_id') }}"
     db_instance_class: "{{ rds_instance_class }}"
-    db_name: "{{ rds_db_name }}"
     master_username: "{{ rds_db_username }}"
     master_user_password: "{{ rds_db_password }}"
     allocated_storage: "{{ rds_allocated_storage }}"
@@ -87,7 +87,4 @@
     preferred_backup_window: "{{ rds_preferred_backup_window }}"
     preferred_maintenance_window: "{{ rds_preferred_maintenance_window }}"
     auto_minor_version_upgrade: True
-    tags: 
-      Name: "{{ rds_name }}"
-      Environment: "{{ aws_resource_environment }}"
-  when: rds_from == "snapshot"
+  when: rds_from == "instance"

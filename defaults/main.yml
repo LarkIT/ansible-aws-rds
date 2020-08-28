@@ -33,3 +33,4 @@ rds_preferred_backup_window: 07:00-08:00
 rds_preferred_maintenance_window: Sun:09:00-Sun:10:00
 rds_from: blank
 rds_source_snapshot_arn: my-snapshot-arn
+rds_use_latest_restorable_time: true
