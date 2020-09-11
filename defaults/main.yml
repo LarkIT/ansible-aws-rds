@@ -1,7 +1,7 @@
 # defaults/main.yml
 # Role default parameters
 ---
-vpc_id: my-vpc-id
+aws_vpc_id: my-vpc-id
 aws_region: west-us-2
 aws_resource_environment: Staging
 rds_name: my-rds-instance
